@@ -6,8 +6,8 @@ export interface Users {
     authProvider: string;
     createdAt?: Date;
     lastLogin?: Date;
-    favoritePlayers: string[];
-    favoriteTeam: string;
+    favoritePlayers?: string[];
+    favoriteTeam?: string;
     role?: string;
 }
 
