@@ -12,17 +12,12 @@ export interface Users {
 }
 
 export interface UserWriteDto {
-    name: string;
+    name?: string;
     email: string;
     password: string;
-    favoritePlayers?: string[];
-    favoriteTeam?: string;
-    role?: string;
 }
 
 export interface UserReadDto {
     name: string;
     email: string;
-    favoritePlayers?: string[];
-    favoriteTeam?: string;
 }
