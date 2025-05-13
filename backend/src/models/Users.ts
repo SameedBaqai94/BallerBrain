@@ -12,7 +12,7 @@ export interface Users {
 }
 
 export interface UserWriteDto {
-    name?: string;
+    name: string;
     email: string;
     password: string;
 }
@@ -20,4 +20,8 @@ export interface UserWriteDto {
 export interface UserReadDto {
     name: string;
     email: string;
+}
+export interface UserSignInDto {
+    email: string;
+    password: string;
 }

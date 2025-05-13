@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { UserWriteDto } from "../models/Users";
-import { createUserService, getUser } from "../services/UserServices";
+import { UserSignInDto, UserWriteDto } from "../models/Users";
+import { createUserService, getUser, signInUser } from "../services/UserServices";
+import { generateToken } from "../utils/jwtUtils";
 
 export const userCreateController = async (req: Request<{}, {}, UserWriteDto>, res: Response) => {
     try {
@@ -16,13 +17,22 @@ export const userCreateController = async (req: Request<{}, {}, UserWriteDto>, r
     }
 }
 
-export const userSignInController = async (req: Request<{}, {}, UserWriteDto>, res: Response) => {
+export const userSignInController = async (req: Request<{}, {}, UserSignInDto>, res: Response) => {
     try {
         const { email, password } = { ...req.body };
         if (email === "" || password === "") {
-            res.status(400).json({ error: "Please fill in the required fields" })
+            res.status(400).json({ error: "Please fill in the required fields" });
         }
         const user = await getUser(email);
+        if (!user) {
+            res.status(400).json({ error: "User not found" });
+        }
+        else {
+            const signIn = await signInUser(user.password, password);
+
+            signIn.response ? res.status(200).json({ response: { jwt: await generateToken({ test: "testing" }) } }) : res.status(401).json({ error: signIn.error })
+        }
+
     } catch (error) {
         res.status(401).json({ error: (error as Error).message });
     }

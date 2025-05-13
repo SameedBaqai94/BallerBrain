@@ -1,12 +1,13 @@
-import { UserWriteDto } from "../models/Users";
+import { UserSignInDto, UserWriteDto } from "../models/Users";
 import { PrismaClient } from "../../generated/prisma";
 import bcrypt from "bcrypt";
+import { generateToken } from "../utils/jwtUtils";
 
 const prisma = new PrismaClient();
 
 interface UserServiceResponseInterface {
     error?: string | UserWriteDto;
-    response?: string;
+    response?: string | boolean;
 }
 
 export const createUserService = async (user: UserWriteDto): Promise<UserServiceResponseInterface> => {
@@ -32,22 +33,29 @@ export const createUserService = async (user: UserWriteDto): Promise<UserService
     }
 }
 
-export const getUser = async (email: string): Promise<UserWriteDto> => {
+export const getUser = async (email: string): Promise<UserSignInDto | null> => {
 
     const user = await prisma.users.findFirst({
         where: { email: email }
     })
+    if (!user) {
+        return null;
+    }
     const returnUser = {
-        name: user?.name,
         email: user.email,
         password: user.password
     }
     return returnUser;
 
+
 }
-export const signInUser = async (password: string): Promise<UserServiceResponseInterface> => {
+export const signInUser = async (password: string, passwordGiven: string): Promise<UserServiceResponseInterface> => {
     try {
-        return { response: "User logged in" };
+        const comparePassword = await bcrypt.compare(passwordGiven, password);
+        if (!comparePassword) {
+            return { error: "User not logged in" };
+        }
+        return { response: true };
     }
     catch (error) {
         return { error: (error as Error).message };
