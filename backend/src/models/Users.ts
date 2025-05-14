@@ -20,6 +20,7 @@ export interface UserWriteDto {
 export interface UserReadDto {
     name: string;
     email: string;
+    password?: string;
 }
 export interface UserSignInDto {
     email: string;

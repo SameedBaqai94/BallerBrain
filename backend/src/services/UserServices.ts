@@ -1,4 +1,4 @@
-import { UserSignInDto, UserWriteDto } from "../models/Users";
+import { UserReadDto, UserSignInDto, UserWriteDto } from "../models/Users";
 import { PrismaClient } from "../../generated/prisma";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/jwtUtils";
@@ -33,7 +33,7 @@ export const createUserService = async (user: UserWriteDto): Promise<UserService
     }
 }
 
-export const getUser = async (email: string): Promise<UserSignInDto | null> => {
+export const getUser = async (email: string): Promise<UserReadDto | null> => {
 
     const user = await prisma.users.findFirst({
         where: { email: email }
@@ -42,6 +42,7 @@ export const getUser = async (email: string): Promise<UserSignInDto | null> => {
         return null;
     }
     const returnUser = {
+        name: user.name,
         email: user.email,
         password: user.password
     }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserSignInDto, UserWriteDto } from "../models/Users";
+import { UserReadDto, UserSignInDto, UserWriteDto } from "../models/Users";
 import { createUserService, getUser, signInUser } from "../services/UserServices";
 import { generateToken } from "../utils/jwtUtils";
 
@@ -23,14 +23,16 @@ export const userSignInController = async (req: Request<{}, {}, UserSignInDto>, 
         if (email === "" || password === "") {
             res.status(400).json({ error: "Please fill in the required fields" });
         }
-        const user = await getUser(email);
+        const user: UserReadDto | null = await getUser(email);
         if (!user) {
             res.status(400).json({ error: "User not found" });
+        } else if (!user.password) {
+            res.status(400).json({ error: "Users password is missing" });
         }
         else {
             const signIn = await signInUser(user.password, password);
 
-            signIn.response ? res.status(200).json({ response: { jwt: await generateToken({ test: "testing" }) } }) : res.status(401).json({ error: signIn.error })
+            signIn.response ? res.status(200).json({ response: { jwt: await generateToken({ name: user.name }) } }) : res.status(401).json({ error: signIn.error })
         }
 
     } catch (error) {
