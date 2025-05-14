@@ -15,14 +15,10 @@ datasource db {
 }
 
 model Users {
-  id               Int      @id @default(autoincrement())
-  name             String   @unique @db.VarChar(255)
-  email            String   @unique @db.VarChar(255)
-  password         String
-  auth_provider    String
-  created_at       DateTime @default(now())
-  last_login       DateTime @default(now())
-  favorite_players String[]
-  favorite_team    String?
-  role             String?
+  id         Int      @id @default(autoincrement())
+  name       String   @unique @db.VarChar(255)
+  email      String   @unique @db.VarChar(255)
+  password   String
+  created_at DateTime @default(now())
+  last_login DateTime @default(now())
 }

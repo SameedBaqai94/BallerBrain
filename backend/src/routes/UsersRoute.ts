@@ -4,6 +4,7 @@ import { userCreateController, userSignInController } from "../controller/UsersC
 const router = Router();
 
 router.post("/register", userCreateController);
+router.get("/test", () => { console.log("testing") })
 router.post("/signin", userSignInController);
 
 export default router;

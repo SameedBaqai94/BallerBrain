@@ -125,12 +125,8 @@ exports.Prisma.UsersScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
-  auth_provider: 'auth_provider',
   created_at: 'created_at',
-  last_login: 'last_login',
-  favorite_players: 'favorite_players',
-  favorite_team: 'favorite_team',
-  role: 'role'
+  last_login: 'last_login'
 };
 
 exports.Prisma.SortOrder = {
@@ -141,11 +137,6 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
-};
-
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
 };
 
 

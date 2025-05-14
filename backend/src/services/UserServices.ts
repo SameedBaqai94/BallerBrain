@@ -12,6 +12,7 @@ interface UserServiceResponseInterface {
 
 export const createUserService = async (user: UserWriteDto): Promise<UserServiceResponseInterface> => {
     try {
+        console.log("test");
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(user.password, salt);
         console.log(hashedPassword);

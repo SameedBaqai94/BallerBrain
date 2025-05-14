@@ -7,7 +7,7 @@ const PORT = 3000;
 dotenv.config();
 
 app.use(express.json());
-app.use("/api/user", usersRoute);
+app.use("api/user", usersRoute);
 
 app.listen(PORT, () => {
     console.log(`${PORT} is listening`);
